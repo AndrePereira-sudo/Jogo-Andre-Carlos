@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.badlogic.gdx.graphics.Color;
 import java.util.ArrayList;
 import com.badlogic.gdx.math.Rectangle;
-//A/
+// Importar as classes necessárias do LibGDX
 /** First screen of the application. Displayed after the application is created. */
 public class FirstScreen implements Screen {
     SpriteBatch loteDesenho;
