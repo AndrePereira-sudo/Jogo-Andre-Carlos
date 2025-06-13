@@ -286,9 +286,24 @@ public class FirstScreen implements Screen {
             //musicaFundo.stop(); // parar música ao mudar de ecrã (opcional)
             ((Principal) Gdx.app.getApplicationListener()).setScreen(new SecondScreen((int) jogador.x, (int) jogador.y));
         }
+        /*
+        // Atualizar lasers
+        for (int i = 0; i < lasers.size(); i++) {
+            Laser laser = lasers.get(i);
+            laser.atualizar(Gdx.graphics.getDeltaTime());
+            // Remover laser se sair da tela
+            if (laser.forma.x > viewport.getWorldWidth() || laser.forma.x < 0 ||
+                laser.forma.y > viewport.getWorldHeight() || laser.forma.y < 0) {
+                lasers.remove(i);
+                i--;
+            }
+        }
+*/
 
             for (int i = 0; i < lasers.size(); i++) {
             Laser laser = lasers.get(i);
+            laser.atualizar(Gdx.graphics.getDeltaTime());
+            // Verificar colisões entre lasers e inimigos
 
             for (int j = 0; j < inimigos.size(); j++) {
                 if (laser.forma.overlaps(inimigos.get(j))) {
@@ -345,7 +360,16 @@ public class FirstScreen implements Screen {
             jogador.x -= lspeed;
             jogador.y -= lspeed;
         }
-        // Verificar se o jogador pressionou a tecla de disparo ou clicou com o mouse
+
+ /*
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.justTouched())
+            && tempoDesdeUltimoTiro > tempoEntreTiros) {
+            Laser novoLaser = new Laser(jogador.x + jogador.width / 2, jogador.y + jogador.height / 2, lmousePos);
+            lasers.add(novoLaser);
+            sons.get(1).play(); // Som de disparo (laser)
+            tempoDesdeUltimoTiro = 0;
+        }
+*/        // Verificar se o jogador pressionou a tecla de disparo ou clicou com o mouse
         if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.justTouched())
             && tempoDesdeUltimoTiro > tempoEntreTiros) {
 
