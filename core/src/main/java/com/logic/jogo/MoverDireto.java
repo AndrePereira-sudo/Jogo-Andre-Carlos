@@ -1,7 +1,7 @@
 //package com.logic.jogo;
 package com.mygdx.game.inimigos;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 
 public class MoverDireto implements com.mygdx.game.inimigos.MovimentoStrategy {
     private float velocidade;
