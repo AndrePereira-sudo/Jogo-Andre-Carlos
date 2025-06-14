@@ -1,9 +1,8 @@
-//package com.logic.jogo;
-package com.mygdx.game.inimigos;
+package com.logic.jogo;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.inimigos.MovimentoStrategy;
 
-
-public class MoverDireto implements com.mygdx.game.inimigos.MovimentoStrategy {
+public class MoverDireto implements MovimentoStrategy {
     private float velocidade;
 
     public MoverDireto(float velocidade) {
@@ -18,20 +17,6 @@ public class MoverDireto implements com.mygdx.game.inimigos.MovimentoStrategy {
             if (inimigo.y < jogador.y) inimigo.y += velocidade;
             if (inimigo.y > jogador.y) inimigo.y -= velocidade;
 
-/*        // Alternativa: Move o inimigo diretamente na direção do jogador
-        float deltaX = jogador.x - inimigo.x;
-        float deltaY = jogador.y - inimigo.y;
-        float distancia = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // Normaliza a direção
-        if (distancia > 0) {
-            deltaX /= distancia;
-            deltaY /= distancia;
-        }
-
-        // Move o inimigo na direção do jogador
-        inimigo.x += deltaX * velocidade;
-        inimigo.y += deltaY * velocidade;
-       */
     }
 }

@@ -1,10 +1,20 @@
 package com.logic.jogo;
 import com.badlogic.gdx.math.Rectangle;
-import java.util.ArrayList;
+import com.mygdx.game.inimigos.MovimentoStrategy;
 
 public class Inimigo {
     // Inicializar inimigos
 
+    public Rectangle corpo;
+    private MovimentoStrategy estrategia;
+
+    public Inimigo(Rectangle corpo, MovimentoStrategy estrategia) {
+        this.corpo = corpo;
+        this.estrategia = estrategia;
+    }
+}
+
+    /*
        public static ArrayList<Rectangle> criarInimigos() {
         ArrayList<Rectangle> inimigos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -18,4 +28,4 @@ public class Inimigo {
         return inimigos;
     }
 }
-
+*/
