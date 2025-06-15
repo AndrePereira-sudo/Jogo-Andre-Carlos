@@ -23,6 +23,7 @@ public class FirstScreen implements Screen {
     SpriteBatch loteDesenho;
     // Carregar texturas
     Texture jogadorTextura = new Texture("jogador.png");
+    Texture laserTextura = new Texture("laser2.png"); // Crie uma textura laser.png
     Texture inimigoTextura;
     Texture obstaculoTextura;
     Texture backgroundTexture;
@@ -31,13 +32,11 @@ public class FirstScreen implements Screen {
     Viewport viewport;
     Rectangle portal;// Declaração do portal
     Rectangle jogador;// Declaração do jogador
-    Rectangle inimigo;
     ArrayList<Rectangle> obstaculos;
     ArrayList<Rectangle> inimigos;
     ArrayList<Texture> texturas;
     ArrayList<Sound> sons;// Declaração da lista de sons
     ArrayList<Laser> lasers = new ArrayList<>();// Lista de lasers disparados
-    Texture laserTextura = new Texture("laser2.png"); // Crie uma textura laser.png
 
     // Declare som de colisão e música de fundo
     private Sound somColisao;
@@ -60,26 +59,24 @@ public class FirstScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1); // Cor de fundo preta
         // Limpar o ecrã
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
         // Inicializar texturas
         jogadorTextura = new Texture("jogador.png");
         inimigoTextura = new Texture("inimigo.png");
         obstaculoTextura = new Texture("planeta.png");
         backgroundTexture = new Texture("background.png");
         portalTextura = new Texture("portal.png"); // carregar textuta do portal
-
         // Criar retângulo do portal
         portal = new Rectangle();
         portal.x = 580;
         portal.y = 350;
         portal.width = 48;
         portal.height = 48;
-
+        // Criar retângulo do jogador
         jogador = Jogador.criarJogador();// Chamar o método estático para criar o jogador
-       // inimigos = Inimigo.criarInimigos();// Chamar
+        inimigos = Inimigo.criarInimigos();// Chamar o método estático para criar inimigos
             ArrayList<Inimigo> inimigos = new ArrayList<>();
             Rectangle inimigo1 = new Rectangle(200, 200, 64, 64);
-            inimigos.add(new Inimigo(inimigo1, new MoverDireto(1)));
+            inimigos.add(new Inimigo(inimigo1,  new MoverDireto(1)));
             Rectangle inimigo2 = new Rectangle(300, 300, 64, 64);
             inimigos.add(new Inimigo(inimigo2, new MoverAleatorio(1)));
             Rectangle inimigo3 = new Rectangle(400, 400, 64, 64);
@@ -95,7 +92,6 @@ public class FirstScreen implements Screen {
         texturas.add(jogadorTextura);// Adicionar textura do jogador
         texturas.add(inimigoTextura);// Adicionar textura do inimigo
         texturas.add(obstaculoTextura);// Adicionar textura do obstáculo
-
         // Inicializar sons
         musicaFundo = Gdx.audio.newMusic(Gdx.files.internal("musica_fundo.mp3")); // Substitua pelo nome do seu arquivo
         musicaFundo.setLooping(true); // Para tocar continuamente
@@ -149,18 +145,6 @@ public class FirstScreen implements Screen {
             } while (sobrepoeJogador);
             obstaculos.add(obstaculo);
         }
-
-        //metodo para gerar inimigos aleatórios
-        inimigos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Rectangle inimigo = new Rectangle();
-            inimigo.x = MathUtils.random(0, Gdx.graphics.getWidth() - 32);
-            inimigo.y = MathUtils.random(0, Gdx.graphics.getHeight() - 32);
-            inimigo.width = 32;
-            inimigo.height = 32;
-            inimigos.add(inimigo);
-        }
-
         // Garantir que portal não está proximo dos obtaculos
         for (Rectangle obstaculo : obstaculos) {
             // Verificar se o portal está sobreposto a algum obstáculo
@@ -191,30 +175,14 @@ public class FirstScreen implements Screen {
         input();
         logic();
         draw();
-
-        // Verificar colisões entre o jogador e os inimigos
-        for (Rectangle inimigo : inimigos) {
-            inimigo.overlaps(jogador);
-        }
-        // Atualizar lógica do jogo
-        viewport.apply();
-        // Atualizar câmara
-        camera.update();
-        loteDesenho.setProjectionMatrix(camera.combined);
-
-       // loteDesenho.begin();
-        //loteDesenho.draw(jogadorTextura, 32, 32);
-        //loteDesenho.end();
     }
 
     private void draw() {
         // Desenhar o ecrã
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);  // Limpar o ecrã
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-
-        // Aplicar a viewport
         ScreenUtils.clear(Color.BLACK);
-        viewport.apply();
+        viewport.apply();// Aplicar a viewport
         loteDesenho.setProjectionMatrix(viewport.getCamera().combined);
 
         loteDesenho.begin();// Iniciar o lote de desenho
@@ -294,16 +262,13 @@ public class FirstScreen implements Screen {
                 if (laser.forma.overlaps(inimigos.get(j))) {
                     lasers.remove(i);
                     inimigos.remove(j);
-
                     sons.get(0).play(); // Explosão
-                    // Aqui você pode também adicionar uma animação de explosão
-
+                    // Aqui falta adicionar uma animação de explosão
                     i--;
-                  //  break;
+                    break;
                 }
             }
         }
-
     }
 
     private float tempoEntreTiros = 0.3f;
@@ -331,7 +296,6 @@ public class FirstScreen implements Screen {
 
         float lspeed = 200 * Gdx.graphics.getDeltaTime();
         tempoDesdeUltimoTiro += Gdx.graphics.getDeltaTime();
-
         // Movimentação jogador
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) jogador.x -= lspeed;
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) jogador.x += lspeed;
@@ -370,7 +334,6 @@ public class FirstScreen implements Screen {
      // Limitar o jogador dentro dos limites da viewport
       jogador.x = Math.max(0, Math.min(jogador.x, viewport.getWorldWidth() - jogador.width));
       jogador.y = Math.max(0, Math.min(jogador.y, viewport.getWorldHeight() - jogador.height));
-
     }
 
     // Verificar colisões com obstáculos
@@ -430,28 +393,21 @@ public class FirstScreen implements Screen {
     }
 
     @Override
-    public void pause() {
-    }
+    public void pause() {    }
 
     @Override
-    public void resume() {
-    }
+    public void resume() {    }
 
     @Override
-    public void hide() {
-    }
+    public void hide() {    }
 
     @Override
-    public void dispose() {
-        // Dispose of textures
-        jogadorTextura.dispose();
-        inimigoTextura.dispose();
+    public void dispose() {        // Dispose of textures
         jogadorTextura.dispose();
         inimigoTextura.dispose();
         obstaculoTextura.dispose();
         backgroundTexture.dispose();
         portalTextura.dispose();
-        // Dispose of sprite batch
         loteDesenho.dispose();
     }
 }
