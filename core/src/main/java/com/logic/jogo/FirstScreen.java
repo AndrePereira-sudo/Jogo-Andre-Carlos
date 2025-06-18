@@ -244,7 +244,7 @@ public class FirstScreen implements Screen {
                     somColisao.play();
                 }
                 // Tocar som de colisão
-                somColisao.play();
+  //              somColisao.play();
             }
         }
         // Verificar se jogador entrou no portal
